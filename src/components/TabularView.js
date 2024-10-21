@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import moment from 'moment'
 // import { ExtensionContext } from '@looker/extension-sdk-react'
 import { Filters } from './Filters'
 import { EventsTable } from './EventsTable'
@@ -22,10 +21,12 @@ export const TabularView = () => {
 
     useEffect(() => {
         fetchData({
-            "long_name_en": "Savola Group",
+            "long_name_en": false,
             "symbol": false,
             "industry_group_en": false,
-            "actionType": false
+            "actionType": false,
+            "startDate": "2024/10/01",
+            "endDate": "2024/10/30"
         });
     }, []);
 
@@ -37,17 +38,27 @@ export const TabularView = () => {
         console.log(filters);
         
         const currentFilters = {};
+
+        // eslint-disable-next-line
         filters.long_name_en ? 
             currentFilters["v_corporate_actions.long_name_en"] = filters.long_name_en : '';
 
+        // eslint-disable-next-line
         filters.symbol ? 
             currentFilters["v_corporate_actions.symbol"] = filters.symbol : '';
 
+        // eslint-disable-next-line
         filters.industry_group_en ? 
             currentFilters["v_corporate_actions.industry_group_en"] = filters.industry_group_en : '';
 
+        // eslint-disable-next-line
         filters.actionType ? 
             currentFilters["v_corporate_actions.actionType"] = filters.actionType : '';
+
+        // eslint-disable-next-line
+        filters.startDate && filters.endDate ? 
+            currentFilters["v_corporate_actions.action_date"] = `${filters.startDate} to ${filters.endDate}` : '';
+
 
         console.log(currentFilters);
 

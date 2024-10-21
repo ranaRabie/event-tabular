@@ -169,7 +169,7 @@ table {
   display: block;
 }
 
-.filters button {
+.filters .submit-filters {
   background-color: rgb(0, 140, 255);
   border: 1px solid #fff;
   outline: none;
@@ -181,6 +181,11 @@ table {
   border-radius: 3px;
   position: relative;
   top: 10px;
+}
+
+.date-picker-wrapper input {
+  margin: 0.2rem 0.3rem 0.5rem;
+  padding: 0.25rem;
 }
 
 .loader {
