@@ -7,7 +7,7 @@ import { DividendTable } from './DividendTable'
 import { GeneralAssemblyMeetingTable } from './GeneralAssemblyMeetingTable'
 import { BoardOfDirectorsSessionTable } from './BoardOfDirectorsSessionTable'
 import { AnnouncementTable } from './AnnouncementTable'
-import eventsDummy from '../data.json'
+import eventsDummy from '../data/data.json'
 
 export const TabularView = () => {
     // const extensionContext = useContext(ExtensionContext);
@@ -17,21 +17,40 @@ export const TabularView = () => {
 
     const [eventsList, setEventsList] = useState(null); // Should use setEventsList when calling API
     const [selectedItem, setSelectedItem] = useState(null);
-    const [filterData, setFilterData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const { firstDateOfMonth, lastDateOfMonth } = getMonthStartEndDate(new Date());
-
-        fetchData(firstDateOfMonth, lastDateOfMonth);
+        fetchData({
+            "long_name_en": "Savola Group",
+            "symbol": false,
+            "industry_group_en": false,
+            "actionType": false
+        });
     }, []);
 
-    const fetchData = async (startDate, endDate) => {
+    const fetchData = async (filters) => {
         setIsLoading(true);
         setSelectedItem(null);
         setError(null);
-        // filtersRef.current.clearForm();
+
+        console.log(filters);
+        
+        const currentFilters = {};
+        filters.long_name_en ? 
+            currentFilters["v_corporate_actions.long_name_en"] = filters.long_name_en : '';
+
+        filters.symbol ? 
+            currentFilters["v_corporate_actions.symbol"] = filters.symbol : '';
+
+        filters.industry_group_en ? 
+            currentFilters["v_corporate_actions.industry_group_en"] = filters.industry_group_en : '';
+
+        filters.actionType ? 
+            currentFilters["v_corporate_actions.actionType"] = filters.actionType : '';
+
+        console.log(currentFilters);
+
 
         try {
             // RUN INLINE QUERY
@@ -57,7 +76,6 @@ export const TabularView = () => {
             //                 'v_corporate_actions.dividends_eligibility_date',
             //                 'v_corporate_actions.dividends_distribution_method',
             //                 'v_corporate_actions.dividends_distribution_amount',
-            //                 'v_corporate_actions.dividends_ex_date',
             //                 'v_corporate_actions.gam_type_of_assembly',
             //                 'v_corporate_actions.gam_agm_date',
             //                 'v_corporate_actions.gam_holding_site',
@@ -71,9 +89,7 @@ export const TabularView = () => {
             //                 'v_corporate_actions.announcement_details'
             //             ],
 
-            //             filters: {
-            //                 "v_corporate_actions.action_date": `${moment(startDate).format("YYYY/MM/DD")} to ${moment(endDate).format("YYYY/MM/DD")}`
-            //             },
+            //             filters: currentFilters,
             //             filter_expression: null,
             //             total: false,
             //         }
@@ -82,20 +98,6 @@ export const TabularView = () => {
 
             // setEventsList(response);
             setEventsList(eventsDummy);
-            
-            // if (response) {
-                // setEventsFilterList(response); // Set it when set eventsList
-
-                // const filterDataArr = {
-                //     long_name_en: [...new Set(response.filter(event => event['v_corporate_actions.long_name_en'] !== null).map(event => event['v_corporate_actions.long_name_en']))],
-                //     symbol: [...new Set(response.filter(event => event['v_corporate_actions.symbol'] !== null).map(event => event['v_corporate_actions.symbol']))],
-                //     industry_group_en: [...new Set(response.filter(event => event['v_corporate_actions.industry_group_en'] !== null).map(event => event['v_corporate_actions.industry_group_en']))],
-                //     actionType: [...new Set(response.filter(event => event['v_corporate_actions.action_type'] !== null).map(event => event['v_corporate_actions.action_type']))]
-                // }
-
-                // setFilterData(filterDataArr);
-            // }
-
             setIsLoading(false);
 
         } catch (error) {
@@ -110,31 +112,13 @@ export const TabularView = () => {
         setSelectedItem(item);
     }
 
-    const getMonthStartEndDate = (currentDate) => {
-        const firstDateOfMonth = (date = new Date()) =>
-            new Date(date.getFullYear(), date.getMonth(), 1);
-        const lastDateOfMonth = (date = new Date()) =>
-            new Date(date.getFullYear(), date.getMonth() + 1, 0);
-
-        return { firstDateOfMonth: firstDateOfMonth(currentDate), lastDateOfMonth: lastDateOfMonth(currentDate) };
-    }
-
     const onFiltersUpdate = (filtersList) => {
-        
-
-        const filteredEvents = eventsList.filter(event =>
-            (!filtersList.long_name_en || event['v_corporate_actions.long_name_en'] === filtersList.long_name_en) &&
-            (!filtersList.symbol || event['v_corporate_actions.symbol'] === parseInt(filtersList.symbol)) &&
-            (!filtersList.industry_group_en || event['v_corporate_actions.industry_group_en'] === filtersList.industry_group_en) &&
-            (!filtersList.actionType || event['v_corporate_actions.action_type'] === filtersList.actionType)
-        );
-
-        
+        fetchData(filtersList);
     }
 
     return (
         <div className='app-wrapper'>
-            <Filters filterData={filterData} onFiltersUpdate={onFiltersUpdate} ref={filtersRef} />
+            <Filters onFiltersUpdate={onFiltersUpdate} ref={filtersRef} />
             <div className='events-wrapper'>
                 {eventsList ? (
                     <>

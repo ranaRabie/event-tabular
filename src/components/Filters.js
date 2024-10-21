@@ -1,6 +1,6 @@
 import React, { useRef, useImperativeHandle, forwardRef } from "react";
 
-export const Filters = forwardRef(({filterData, onFiltersUpdate}, ref) => {
+export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     const companyRef = useRef();
     const symbolRef = useRef();
     const industry_group_enRef = useRef();
@@ -67,28 +67,29 @@ export const Filters = forwardRef(({filterData, onFiltersUpdate}, ref) => {
                 <label>Company Name</label>
                 <select ref={companyRef} onChange={onSelectCompanyChange}>
                     <option value="all">all</option>
-                    {filterData && filterData.long_name_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    <option value="A L1">A L1</option>
+                    {/* {filterData && filterData.long_name_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)} */}
                 </select>
             </div>
             <div>
                 <label>Symbol</label>
                 <select ref={symbolRef} onChange={onSelectSymbolChange}>
                     <option value="all">all</option>
-                    {filterData && filterData.symbol.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    {/* {filterData && filterData.symbol.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)} */}
                 </select>
             </div>
             <div>
                 <label>Industry</label>
                 <select ref={industry_group_enRef}>
                     <option value="all">all</option>
-                    {filterData && filterData.industry_group_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    {/* {filterData && filterData.industry_group_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)} */}
                 </select>
             </div>
             <div>
                 <label>Action Type</label>
                 <select ref={actionTypeRef}>
                     <option value="all">all</option>
-                    {filterData && filterData.actionType.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    {/* {filterData && filterData.actionType.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)} */}
                 </select>
             </div>
             <button onClick={updateFilters}>Update</button>
