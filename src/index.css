@@ -34,25 +34,11 @@ code {
 
 .app-wrapper {
   padding: 0 1rem;
-  display: flex;
-  /* justify-content: space-between; */
-  flex-wrap: wrap;
-}
-
-.filters {
-  flex: 0 0 100%;
-}
-
-.calendar-wrapper {
-  flex: 0 0 30%;
 }
 
 .events-wrapper {
-  flex: 0 0 57%;
-  width: 57%;
-  overflow: auto;
-  max-height: 565px;
-  padding-left: 0.5rem;
+  width: 100%;
+  padding-bottom: 0.5rem;
 }
 
 .highlight {
@@ -189,7 +175,7 @@ table {
 }
 
 .loader {
-  width: 320px;
+  width: 100%;
   margin: 0 auto;
   border-radius: 10px;
   position: relative;
@@ -218,13 +204,13 @@ table {
   10% {
     left: 0%;
     right: 75%;
-    width: 25%;
+    width: 15%;
   }
 
   90% {
     right: 0%;
     left: 75%;
-    width: 25%;
+    width: 15%;
   }
 
   100% {
