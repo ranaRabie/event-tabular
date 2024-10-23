@@ -111,17 +111,28 @@ export const TabularView = () => {
         }
     }
 
-    const onClickItem = (item) => {
-        setSelectedItem(item);
-    }
+    const handleRowClick = (listItem) => {
+        if (
+          listItem["v_corporate_actions.action_type"] === "Dividend" ||
+          listItem["v_corporate_actions.entry_type"] === "Announcement" ||
+          listItem["v_corporate_actions.action_type"] === "Board of Directors Session" ||
+          listItem["v_corporate_actions.action_type"] === "General Assembly Meeting"
+        ) {
+          setSelectedItem(listItem);
+        }
+    };
 
-    const onFiltersUpdate = (filtersList) => {
+    const handleClosePopup = () => {
+        setSelectedItem(null);
+    };
+
+    const handleFilterChange = (filtersList) => {
         fetchData(filtersList);
     }
 
     return (
         <div className='app-wrapper'>
-            <Filters onFiltersUpdate={onFiltersUpdate} ref={filtersRef} />
+            <Filters handleFilterChange={handleFilterChange} ref={filtersRef} />
             <div className='events-wrapper'>
                 {eventsList ? (
                     <>
@@ -131,11 +142,22 @@ export const TabularView = () => {
                                 <div class="loaderBar"></div>
                             </div>
                         ) : ''}
-                        <EventsTable list={eventsList} onClickItem={onClickItem}></EventsTable>
+                        <EventsTable list={eventsList} onClickItem={handleRowClick}></EventsTable>
 
+                        {selectedItem && <button onClick={handleClosePopup} className="close-button">X</button>}
                         {
                             selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Dividend' ?
                                 <DividendTable listItem={selectedItem}></DividendTable> : ''
+                        }
+                        
+                        {
+                            selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Board of Directors Session' ?
+                                <BoardOfDirectorsSessionTable listItem={selectedItem}></BoardOfDirectorsSessionTable> : ''
+                        }
+
+                        {
+                            selectedItem && selectedItem['v_corporate_actions.action_type'] === 'General Assembly Meeting' ?
+                                <GeneralAssemblyMeetingTable listItem={selectedItem}></GeneralAssemblyMeetingTable> : ''
                         }
 
                         {

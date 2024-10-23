@@ -5,7 +5,7 @@ import moment from 'moment';
 // import { ExtensionContext } from '@looker/extension-sdk-react';
 import filterDummy from '../data/filters.json'
 
-export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
+export const Filters = forwardRef(({handleFilterChange}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
     // const sdk = extensionContext.core40SDK; // Use the appropriate version of the Looker API
 
@@ -18,6 +18,9 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     const symbolRef = useRef();
     const industry_group_enRef = useRef();
     const actionTypeRef = useRef();
+
+    // const [isCompanySelected, setIsCompanySelected] = useState(false);
+    // const [isSymbolSelected, setIsSymbolSelected] = useState(false);
     
     useEffect(() => {
         fetchFilterData();
@@ -55,7 +58,7 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
             if (filterDummy) {
                 const filterDataArr = {
                     long_name_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.long_name_en'] !== null).map(event => event['v_ca_filters.long_name_en']))],
-                    symbol: [...new Set(respofilterDummynse.filter(event => event['v_ca_filters.symbol'] !== null).map(event => event['v_ca_filters.symbol']))],
+                    symbol: [...new Set(filterDummy.filter(event => event['v_ca_filters.symbol'] !== null).map(event => event['v_ca_filters.symbol']))],
                     industry_group_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.industry_group_en'] !== null).map(event => event['v_ca_filters.industry_group_en']))],
                     actionType: [...new Set(filterDummy.filter(event => event['v_ca_filters.action_type'] !== null).map(event => event['v_ca_filters.action_type']))]
                 }
@@ -81,7 +84,7 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
             'endDate': `${moment(dateRange[1]).format("YYYY/MM/DD")}`
         }
 
-        onFiltersUpdate(selectedFilters);
+        handleFilterChange(selectedFilters);
     }
 
     const clearFilters = () => {
@@ -95,7 +98,17 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
         industry_group_enRef.current.disabled  = false;
     }
 
-    const onSelectCompanyChange = () => {
+    // const handleCompanyChange = (e) => {
+    //     setIsCompanySelected(e.target.value !== "");
+    //     setIsSymbolSelected(false);
+    // };
+    
+    // const handleSymbolChange = (e) => {
+    //     setIsSymbolSelected(e.target.value !== "");
+    //     setIsCompanySelected(false);
+    // };
+
+    const handleCompanyChange = () => {
         if (companyRef.current.value !== 'all') {
             symbolRef.current.value = 'all';
             industry_group_enRef.current.value = 'all';
@@ -108,7 +121,7 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
         }
     }
 
-    const onSelectSymbolChange = () => {
+    const handleSymbolChange = () => {
         if (symbolRef.current.value !== 'all') {
             companyRef.current.value = 'all';
             
@@ -130,30 +143,30 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
             <form className="filters">
                 <div>
                     <label>Company Name</label>
-                    <select ref={companyRef} onChange={onSelectCompanyChange}>
+                    <select ref={companyRef} onChange={handleCompanyChange}>
                         <option value="all">all</option>
-                        {filterData && filterData.long_name_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                        {filterData && filterData.long_name_en.map((company, idx) => <option value={company} key={idx}>{company}</option>)}
                     </select>
                 </div>
                 <div>
                     <label>Symbol</label>
-                    <select ref={symbolRef} onChange={onSelectSymbolChange}>
+                    <select ref={symbolRef} onChange={handleSymbolChange}>
                         <option value="all">all</option>
-                        {filterData && filterData.symbol.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                        {filterData && filterData.symbol.map((symbol, idx) => <option value={symbol} key={idx}>{symbol}</option>)}
                     </select>
                 </div>
                 <div>
                     <label>Industry</label>
                     <select ref={industry_group_enRef}>
                         <option value="all">all</option>
-                        {filterData && filterData.industry_group_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                        {filterData && filterData.industry_group_en.map((industry, idx) => <option value={industry} key={idx}>{industry}</option>)}
                     </select>
                 </div>
                 <div>
                     <label>Action Type</label>
                     <select ref={actionTypeRef}>
                         <option value="all">all</option>
-                        {filterData && filterData.actionType.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                        {filterData && filterData.actionType.map((action, idx) => <option value={action} key={idx}>{action}</option>)}
                     </select>
                 </div>
                 <div className="date-picker-wrapper">
