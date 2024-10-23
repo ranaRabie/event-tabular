@@ -19,8 +19,8 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     const industry_group_enRef = useRef();
     const actionTypeRef = useRef();
 
-    // const [isCompanySelected, setIsCompanySelected] = useState(false);
-    // const [isSymbolSelected, setIsSymbolSelected] = useState(false);
+    const [isCompanySelected, setIsCompanySelected] = useState(false);
+    const [isSymbolSelected, setIsSymbolSelected] = useState(false);
     
     useEffect(() => {
         fetchFilterData();
@@ -98,38 +98,38 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
         industry_group_enRef.current.disabled  = false;
     }
 
-    // const handleCompanyChange = (e) => {
-    //     setIsCompanySelected(e.target.value !== "");
-    //     setIsSymbolSelected(false);
-    // };
+    const handleCompanyChange = (e) => {
+        setIsCompanySelected(e.target.value !== "all");
+        setIsSymbolSelected(false);
+    };
     
-    // const handleSymbolChange = (e) => {
-    //     setIsSymbolSelected(e.target.value !== "");
-    //     setIsCompanySelected(false);
-    // };
+    const handleSymbolChange = (e) => {
+        setIsSymbolSelected(e.target.value !== "all");
+        setIsCompanySelected(false);
+    };
 
-    const handleCompanyChange = () => {
-        if (companyRef.current.value !== 'all') {
-            symbolRef.current.value = 'all';
-            industry_group_enRef.current.value = 'all';
+    // const handleCompanyChange = () => {
+    //     if (companyRef.current.value !== 'all') {
+    //         symbolRef.current.value = 'all';
+    //         industry_group_enRef.current.value = 'all';
 
-            symbolRef.current.disabled = true;
-            industry_group_enRef.current.disabled  = true;
-        } else {
-            symbolRef.current.disabled = false;
-            industry_group_enRef.current.disabled  = false;
-        }
-    }
+    //         symbolRef.current.disabled = true;
+    //         industry_group_enRef.current.disabled  = true;
+    //     } else {
+    //         symbolRef.current.disabled = false;
+    //         industry_group_enRef.current.disabled  = false;
+    //     }
+    // }
 
-    const handleSymbolChange = () => {
-        if (symbolRef.current.value !== 'all') {
-            companyRef.current.value = 'all';
+    // const handleSymbolChange = () => {
+    //     if (symbolRef.current.value !== 'all') {
+    //         companyRef.current.value = 'all';
             
-            companyRef.current.disabled  = true;
-        } else {
-            companyRef.current.disabled = false;
-        }
-    }
+    //         companyRef.current.disabled  = true;
+    //     } else {
+    //         companyRef.current.disabled = false;
+    //     }
+    // }
 
     useImperativeHandle(ref, () => ({
         clearForm() {
@@ -143,21 +143,21 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             <form className="filters">
                 <div>
                     <label>Company Name</label>
-                    <select ref={companyRef} onChange={handleCompanyChange}>
+                    <select ref={companyRef} onChange={handleCompanyChange} disabled={isSymbolSelected}>
                         <option value="all">all</option>
                         {filterData && filterData.long_name_en.map((company, idx) => <option value={company} key={idx}>{company}</option>)}
                     </select>
                 </div>
                 <div>
                     <label>Symbol</label>
-                    <select ref={symbolRef} onChange={handleSymbolChange}>
+                    <select ref={symbolRef} onChange={handleSymbolChange} disabled={isCompanySelected}>
                         <option value="all">all</option>
                         {filterData && filterData.symbol.map((symbol, idx) => <option value={symbol} key={idx}>{symbol}</option>)}
                     </select>
                 </div>
                 <div>
                     <label>Industry</label>
-                    <select ref={industry_group_enRef}>
+                    <select ref={industry_group_enRef} disabled={isCompanySelected}>
                         <option value="all">all</option>
                         {filterData && filterData.industry_group_en.map((industry, idx) => <option value={industry} key={idx}>{industry}</option>)}
                     </select>
