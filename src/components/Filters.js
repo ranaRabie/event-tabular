@@ -12,6 +12,7 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     const [filterData, setFilterData] = useState(null);
     const [dateRange, setDateRange] = useState([new Date('2024/10/01'), new Date('2024/10/30')]);
     const [startDate, endDate] = dateRange;
+    const [error, setError] = useState(null);
 
     const companyRef = useRef();
     const symbolRef = useRef();
@@ -23,8 +24,7 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     }, []);
 
     const fetchFilterData = async () => {
-        // setIsLoading(true);
-        // setError(null);
+        setError(null);
         
         // Run Inline Query to get Filters Data from Looker
         // Companies, Symbols, Industries, ActionTypes
@@ -60,15 +60,11 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
                     actionType: [...new Set(filterDummy.filter(event => event['v_ca_filters.action_type'] !== null).map(event => event['v_ca_filters.action_type']))]
                 }
 
-                setFilterData(filterDummy);
+                setFilterData(filterDataArr);
             }
 
-            // setIsLoading(false);
-
         } catch (error) {
-            // setIsLoading(false);
-            // setError('something went wrong');
-            console.error(error);
+            setError('something went wrong loading filters');
         }
 
     }
@@ -129,47 +125,50 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     }))
     
     return (
-        <form className="filters">
-            <div>
-                <label>Company Name</label>
-                <select ref={companyRef} onChange={onSelectCompanyChange}>
-                    <option value="all">all</option>
-                    {filterData && filterData.long_name_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
-                </select>
-            </div>
-            <div>
-                <label>Symbol</label>
-                <select ref={symbolRef} onChange={onSelectSymbolChange}>
-                    <option value="all">all</option>
-                    {filterData && filterData.symbol.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
-                </select>
-            </div>
-            <div>
-                <label>Industry</label>
-                <select ref={industry_group_enRef}>
-                    <option value="all">all</option>
-                    {filterData && filterData.industry_group_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
-                </select>
-            </div>
-            <div>
-                <label>Action Type</label>
-                <select ref={actionTypeRef}>
-                    <option value="all">all</option>
-                    {filterData && filterData.actionType.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
-                </select>
-            </div>
-            <div className="date-picker-wrapper">
-                <label>Date Range</label>
-                <DatePicker
-                    selectsRange={true}
-                    startDate={startDate}
-                    endDate={endDate}
-                    onChange={(update) => {
-                        setDateRange(update);
-                    }}
-                />
-            </div>
-            <button className="submit-filters" onClick={updateFilters}>Update</button>
-        </form>
+        <>
+            {error && <div className='error'>{error}</div>}
+            <form className="filters">
+                <div>
+                    <label>Company Name</label>
+                    <select ref={companyRef} onChange={onSelectCompanyChange}>
+                        <option value="all">all</option>
+                        {filterData && filterData.long_name_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label>Symbol</label>
+                    <select ref={symbolRef} onChange={onSelectSymbolChange}>
+                        <option value="all">all</option>
+                        {filterData && filterData.symbol.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label>Industry</label>
+                    <select ref={industry_group_enRef}>
+                        <option value="all">all</option>
+                        {filterData && filterData.industry_group_en.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    </select>
+                </div>
+                <div>
+                    <label>Action Type</label>
+                    <select ref={actionTypeRef}>
+                        <option value="all">all</option>
+                        {filterData && filterData.actionType.map((filter, idx) => <option value={filter} key={idx}>{filter}</option>)}
+                    </select>
+                </div>
+                <div className="date-picker-wrapper">
+                    <label>Date Range</label>
+                    <DatePicker
+                        selectsRange={true}
+                        startDate={startDate}
+                        endDate={endDate}
+                        onChange={(update) => {
+                            setDateRange(update);
+                        }}
+                    />
+                </div>
+                <button className="submit-filters" onClick={updateFilters}>Update</button>
+            </form>
+        </>
     )
 })
