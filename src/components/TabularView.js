@@ -51,7 +51,7 @@ export const TabularView = () => {
 
         // eslint-disable-next-line
         filters.actionType ? 
-            currentFilters["v_corporate_actions.actionType"] = filters.actionType : '';
+            currentFilters["v_corporate_actions.action-type"] = filters.actionType : '';
 
         // eslint-disable-next-line
         filters.startDate && filters.endDate ? 
