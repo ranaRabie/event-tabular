@@ -3,7 +3,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 // import { ExtensionContext } from '@looker/extension-sdk-react';
-import filterDummy from '../data/data.json'
+import filterDummy from '../data/filters.json'
 
 export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
@@ -30,19 +30,19 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
         // Companies, Symbols, Industries, ActionTypes
         try {
             // RUN INLINE QUERY
-            // select action_date, action_type, long_name_en, industry_group_en, isin, symbol from `stg-dev-lkh-23bl6.stg_dev_bqd_product_ca.v_corporate_actions` limit 1000
+            // select action_date, action_type, long_name_en, industry_group_en, isin, symbol from `stg-dev-lkh-23bl6.stg_dev_bqd_product_ca.v_ca_filters` limit 1000
             // const response = await sdk.ok(
             //     sdk.run_inline_query({
             //         result_format: 'json',
             //         limit: null,
             //         body: {
             //             model: 'client_stg_test_data',
-            //             view: 'v_corporate_actions',
+            //             view: 'v_ca_filters',
             //             fields: [
-            //                 'v_corporate_actions.action_type',
-            //                 'v_corporate_actions.long_name_en',
-            //                 'v_corporate_actions.industry_group_en',
-            //                 'v_corporate_actions.symbol'
+            //                 'v_ca_filters.action_type',
+            //                 'v_ca_filters.long_name_en',
+            //                 'v_ca_filters.industry_group_en',
+            //                 'v_ca_filters.symbol'
             //             ],
 
             //             filters: null,
@@ -52,17 +52,15 @@ export const Filters = forwardRef(({onFiltersUpdate}, ref) => {
             //     })
             // );
 
-            // console.log(response);
-
             if (filterDummy) {
                 const filterDataArr = {
-                    long_name_en: [...new Set(filterDummy.filter(event => event['v_corporate_actions.long_name_en'] !== null).map(event => event['v_corporate_actions.long_name_en']))],
-                    symbol: [...new Set(filterDummy.filter(event => event['v_corporate_actions.symbol'] !== null).map(event => event['v_corporate_actions.symbol']))],
-                    industry_group_en: [...new Set(filterDummy.filter(event => event['v_corporate_actions.industry_group_en'] !== null).map(event => event['v_corporate_actions.industry_group_en']))],
-                    actionType: [...new Set(filterDummy.filter(event => event['v_corporate_actions.action_type'] !== null).map(event => event['v_corporate_actions.action_type']))]
+                    long_name_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.long_name_en'] !== null).map(event => event['v_ca_filters.long_name_en']))],
+                    symbol: [...new Set(respofilterDummynse.filter(event => event['v_ca_filters.symbol'] !== null).map(event => event['v_ca_filters.symbol']))],
+                    industry_group_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.industry_group_en'] !== null).map(event => event['v_ca_filters.industry_group_en']))],
+                    actionType: [...new Set(filterDummy.filter(event => event['v_ca_filters.action_type'] !== null).map(event => event['v_ca_filters.action_type']))]
                 }
 
-                setFilterData(filterDataArr);
+                setFilterData(filterDummy);
             }
 
             // setIsLoading(false);

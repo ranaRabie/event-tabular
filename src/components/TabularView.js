@@ -35,8 +35,6 @@ export const TabularView = () => {
         setSelectedItem(null);
         setError(null);
 
-        console.log(filters);
-        
         const currentFilters = {};
 
         // eslint-disable-next-line
@@ -58,10 +56,6 @@ export const TabularView = () => {
         // eslint-disable-next-line
         filters.startDate && filters.endDate ? 
             currentFilters["v_corporate_actions.action_date"] = `${filters.startDate} to ${filters.endDate}` : '';
-
-
-        console.log(currentFilters);
-
 
         try {
             // RUN INLINE QUERY
@@ -114,12 +108,10 @@ export const TabularView = () => {
         } catch (error) {
             setIsLoading(false);
             setError('something went wrong');
-            console.error(error);
         }
     }
 
     const onClickItem = (item) => {
-        console.log(item);
         setSelectedItem(item);
     }
 
