@@ -169,6 +169,26 @@ table {
   top: 10px;
 }
 
+.filter-result {
+  position: relative;
+}
+
+.filter-result button {
+    cursor: pointer;
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    width: 20px;
+    height: 20px;
+    outline: none;
+    background-color: #e97a7a;
+    border: 0;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    color: #fff;
+    font-weight: bold;
+}
+
 .date-picker-wrapper input {
   margin: 0.2rem 0.3rem 0.5rem;
   padding: 0.25rem;

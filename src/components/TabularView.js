@@ -144,26 +144,28 @@ export const TabularView = () => {
                         ) : ''}
                         <EventsTable list={eventsList} onClickItem={handleRowClick}></EventsTable>
 
-                        {selectedItem && <button onClick={handleClosePopup} className="close-button">X</button>}
-                        {
-                            selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Dividend' ?
-                                <DividendTable listItem={selectedItem}></DividendTable> : ''
-                        }
-                        
-                        {
-                            selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Board of Directors Session' ?
-                                <BoardOfDirectorsSessionTable listItem={selectedItem}></BoardOfDirectorsSessionTable> : ''
-                        }
+                        <div className='filter-result'>
+                            {selectedItem && <button onClick={handleClosePopup} className="close-button">X</button>}
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Dividend' ?
+                                    <DividendTable listItem={selectedItem}></DividendTable> : ''
+                            }
+                            
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Board of Directors Session' ?
+                                    <BoardOfDirectorsSessionTable listItem={selectedItem}></BoardOfDirectorsSessionTable> : ''
+                            }
 
-                        {
-                            selectedItem && selectedItem['v_corporate_actions.action_type'] === 'General Assembly Meeting' ?
-                                <GeneralAssemblyMeetingTable listItem={selectedItem}></GeneralAssemblyMeetingTable> : ''
-                        }
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'General Assembly Meeting' ?
+                                    <GeneralAssemblyMeetingTable listItem={selectedItem}></GeneralAssemblyMeetingTable> : ''
+                            }
 
-                        {
-                            selectedItem && selectedItem['v_corporate_actions.entry_type'] === 'Announcement' ?
-                                <AnnouncementTable listItem={selectedItem}></AnnouncementTable> : ''
-                        }
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.entry_type'] === 'Announcement' ?
+                                    <AnnouncementTable listItem={selectedItem}></AnnouncementTable> : ''
+                            }
+                        </div>
                     </>
                 ) : ''}
             </div>

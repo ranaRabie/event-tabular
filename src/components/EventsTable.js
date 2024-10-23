@@ -20,6 +20,13 @@ export const EventsTable = ({list, onClickItem}) => {
                     </tr>
                 </thead>
                 <tbody>
+                    {list.length === 0 && 
+                        <tr className='single-event'>
+                            <td colSpan="6">
+                                No Data Found
+                            </td>
+                        </tr>
+                    }
                     {list.map((listItem, idx) => (
                         <tr className='single-event' key={idx} onClick={() => onRowClick(listItem)}>
                             <td>{
