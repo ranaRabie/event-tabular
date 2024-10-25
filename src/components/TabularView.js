@@ -20,13 +20,15 @@ export const TabularView = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        const filterDates = filtersRef.current.getFilterDates();
+        
         fetchData({
             "long_name_en": false,
             "symbol": false,
             "industry_group_en": false,
             "actionType": false,
-            "startDate": "2024/10/01",
-            "endDate": "2024/10/30"
+            "startDate": filterDates.startDate,
+            "endDate": filterDates.endDate
         });
     }, []);
 

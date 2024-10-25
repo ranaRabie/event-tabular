@@ -9,8 +9,12 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
     // const sdk = extensionContext.core40SDK; // Use the appropriate version of the Looker API
 
+    const today = new Date();
+    const twoWeeksAgo = new Date(today);
+    twoWeeksAgo.setDate(today.getDate() - 14);
+
     const [filterData, setFilterData] = useState(null);
-    const [dateRange, setDateRange] = useState([new Date('2024/10/01'), new Date('2024/10/30')]);
+    const [dateRange, setDateRange] = useState([new Date(twoWeeksAgo), new Date(today)]);
     const [startDate, endDate] = dateRange;
     const [error, setError] = useState(null);
 
@@ -134,6 +138,9 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     useImperativeHandle(ref, () => ({
         clearForm() {
             clearFilters();
+        },
+        getFilterDates() {
+            return {startDate: `${moment(twoWeeksAgo).format("YYYY/MM/DD")}`, endDate: `${moment(today).format("YYYY/MM/DD")}`}
         }
     }))
     
