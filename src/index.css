@@ -169,6 +169,10 @@ table {
   top: 10px;
 }
 
+.filters .clear-filters {
+  margin: 0.3rem 0;
+}
+
 .filter-result {
   position: relative;
 }

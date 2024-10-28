@@ -76,7 +76,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
 
     }
 
-    const updateFilters = (e) => {
+    const updateFilters = (e, startDate = dateRange[0], endDate = dateRange[1]) => {
         e.preventDefault();
 
         const selectedFilters = {
@@ -84,23 +84,28 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             'symbol': symbolRef.current.value !== 'all' && symbolRef.current.value,
             'industry_group_en': industry_group_enRef.current.value !== 'all' && industry_group_enRef.current.value,
             'actionType': actionTypeRef.current.value !== 'all' && actionTypeRef.current.value,
-            'startDate': `${moment(dateRange[0]).format("YYYY/MM/DD")}`,
-            'endDate': `${moment(dateRange[1]).format("YYYY/MM/DD")}`
+            'startDate': `${moment(startDate).format("YYYY/MM/DD")}`,
+            'endDate': `${moment(endDate).format("YYYY/MM/DD")}`
         }
 
         handleFilterChange(selectedFilters);
     }
 
-    const clearFilters = () => {
+    const clearFilters = (e) => {
+        e.preventDefault();
         companyRef.current.value = 'all';
         symbolRef.current.value = 'all';
         industry_group_enRef.current.value = 'all';
         actionTypeRef.current.value = 'all';
 
-        setDateRange([new Date(startDateRange), new Date(endDateRange)]);
+        const currentDateRange = [new Date(startDateRange), new Date(endDateRange)]
+
+        setDateRange(currentDateRange);
 
         setIsCompanySelected(false);
         setIsSymbolSelected(false);
+
+        updateFilters(e, currentDateRange[0], currentDateRange[1]);
     }
 
     const handleCompanyChange = (e) => {
@@ -112,7 +117,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
         setIsSymbolSelected(e.target.value !== "all");
         setIsCompanySelected(false);
     };
-    
+
     useImperativeHandle(ref, () => ({
         clearForm() {
             clearFilters();
