@@ -112,30 +112,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
         setIsSymbolSelected(e.target.value !== "all");
         setIsCompanySelected(false);
     };
-
-    // const handleCompanyChange = () => {
-    //     if (companyRef.current.value !== 'all') {
-    //         symbolRef.current.value = 'all';
-    //         industry_group_enRef.current.value = 'all';
-
-    //         symbolRef.current.disabled = true;
-    //         industry_group_enRef.current.disabled  = true;
-    //     } else {
-    //         symbolRef.current.disabled = false;
-    //         industry_group_enRef.current.disabled  = false;
-    //     }
-    // }
-
-    // const handleSymbolChange = () => {
-    //     if (symbolRef.current.value !== 'all') {
-    //         companyRef.current.value = 'all';
-            
-    //         companyRef.current.disabled  = true;
-    //     } else {
-    //         companyRef.current.disabled = false;
-    //     }
-    // }
-
+    
     useImperativeHandle(ref, () => ({
         clearForm() {
             clearFilters();
