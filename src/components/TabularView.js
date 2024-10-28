@@ -109,7 +109,8 @@ export const TabularView = () => {
 
         } catch (error) {
             setIsLoading(false);
-            setError('something went wrong');
+            setEventsList(null);
+            setError(error);
         }
     }
 

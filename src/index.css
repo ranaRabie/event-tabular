@@ -155,7 +155,7 @@ table {
   display: block;
 }
 
-.filters .submit-filters {
+.filters .submit-filters, .filters .clear-filters {
   background-color: rgb(0, 140, 255);
   border: 1px solid #fff;
   outline: none;

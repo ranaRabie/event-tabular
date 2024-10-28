@@ -9,12 +9,12 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
     // const sdk = extensionContext.core40SDK; // Use the appropriate version of the Looker API
 
-    const today = new Date();
-    const twoWeeksAgo = new Date(today);
-    twoWeeksAgo.setDate(today.getDate() - 14);
+    const endDateRange = new Date();
+    const startDateRange = new Date(endDateRange);
+    startDateRange.setDate(endDateRange.getDate() - 1);
 
     const [filterData, setFilterData] = useState(null);
-    const [dateRange, setDateRange] = useState([new Date(twoWeeksAgo), new Date(today)]);
+    const [dateRange, setDateRange] = useState([new Date(startDateRange), new Date(endDateRange)]);
     const [startDate, endDate] = dateRange;
     const [error, setError] = useState(null);
 
@@ -97,9 +97,10 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
         industry_group_enRef.current.value = 'all';
         actionTypeRef.current.value = 'all';
 
-        companyRef.current.disabled = false;
-        symbolRef.current.disabled = false;
-        industry_group_enRef.current.disabled  = false;
+        setDateRange([new Date(startDateRange), new Date(endDateRange)]);
+
+        setIsCompanySelected(false);
+        setIsSymbolSelected(false);
     }
 
     const handleCompanyChange = (e) => {
@@ -140,7 +141,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             clearFilters();
         },
         getFilterDates() {
-            return {startDate: `${moment(twoWeeksAgo).format("YYYY/MM/DD")}`, endDate: `${moment(today).format("YYYY/MM/DD")}`}
+            return {startDate: `${moment(startDateRange).format("YYYY/MM/DD")}`, endDate: `${moment(endDateRange).format("YYYY/MM/DD")}`}
         }
     }))
     
@@ -187,7 +188,8 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                         }}
                     />
                 </div>
-                <button className="submit-filters" onClick={updateFilters}>Update</button>
+                <button className="submit-filters" onClick={updateFilters}>Apply</button>
+                <button className="clear-filters" onClick={clearFilters}>Clear</button>
             </form>
         </>
     )
