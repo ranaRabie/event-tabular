@@ -167,6 +167,7 @@ table {
   border-radius: 3px;
   position: relative;
   top: 10px;
+  cursor: pointer;
 }
 
 .filters .clear-filters {
