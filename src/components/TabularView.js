@@ -149,56 +149,56 @@ export const TabularView = () => {
             <Filters handleFilterChange={handleFilterChange} ref={filtersRef} />
             {eventsList ? (
                 <>
-                    {error && <div className='error'>{error}</div>}
                     {isLoading ? (
                         <div class="loader">
                             <div class="loaderBar"></div>
                         </div>
                     ) : ''}
-                    
-                    {eventsList.length > 0 && 
-                        <div className='events-wrapper'>
+                    <div className='events-wrapper'>
+                        {error && <div className='error'>{error}</div>}
+                        
+                        {eventsList.length > 0 &&
                             <EventsTable list={eventsList} onClickItem={handleRowClick}></EventsTable>
+                        }
 
-                            <div className='filter-result'>
-                                {selectedItem && <button onClick={handleClosePopup} className="close-button">X</button>}
-                                {
-                                    selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Dividend' ?
-                                        <DividendTable listItem={selectedItem}></DividendTable> : ''
-                                }
-                                
-                                {
-                                    selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Board of Directors Session' ?
-                                        <BoardOfDirectorsSessionTable listItem={selectedItem}></BoardOfDirectorsSessionTable> : ''
-                                }
+                        <div className='filter-result'>
+                            {selectedItem && <button onClick={handleClosePopup} className="close-button">X</button>}
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Dividend' ?
+                                    <DividendTable listItem={selectedItem}></DividendTable> : ''
+                            }
+                            
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'Board of Directors Session' ?
+                                    <BoardOfDirectorsSessionTable listItem={selectedItem}></BoardOfDirectorsSessionTable> : ''
+                            }
 
-                                {
-                                    selectedItem && selectedItem['v_corporate_actions.action_type'] === '(AGM) General Assembly' ?
-                                        <GeneralAssemblyMeetingTable listItem={selectedItem}></GeneralAssemblyMeetingTable> : ''
-                                }
-                                
-                                {
-                                    selectedItem && selectedItem['v_corporate_actions.action_type'] === 'IPO' ?
-                                        <IPOTable listItem={selectedItem}></IPOTable> : ''
-                                }
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === '(AGM) General Assembly' ?
+                                    <GeneralAssemblyMeetingTable listItem={selectedItem}></GeneralAssemblyMeetingTable> : ''
+                            }
+                            
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.action_type'] === 'IPO' ?
+                                    <IPOTable listItem={selectedItem}></IPOTable> : ''
+                            }
 
-                                {
-                                    selectedItem && selectedItem['v_corporate_actions.entry_type'] === 'Announcement' ?
-                                        <AnnouncementTable listItem={selectedItem}></AnnouncementTable> : ''
-                                }
+                            {
+                                selectedItem && selectedItem['v_corporate_actions.entry_type'] === 'Announcement' ?
+                                    <AnnouncementTable listItem={selectedItem}></AnnouncementTable> : ''
+                            }
 
-                                {
-                                    selectedItem && 
-                                    selectedItem['v_corporate_actions.action_type'] !== 'Dividend' && 
-                                    selectedItem['v_corporate_actions.action_type'] !== 'Board of Directors Session' && 
-                                    selectedItem['v_corporate_actions.action_type'] !== '(AGM) General Assembly' &&
-                                    selectedItem['v_corporate_actions.action_type'] !== 'IPO' &&
-                                    selectedItem['v_corporate_actions.entry_type'] !== 'Announcement' ?
-                                        <OtherTable listItem={selectedItem}></OtherTable> : ''
-                                }
-                            </div>
+                            {
+                                selectedItem && 
+                                selectedItem['v_corporate_actions.action_type'] !== 'Dividend' && 
+                                selectedItem['v_corporate_actions.action_type'] !== 'Board of Directors Session' && 
+                                selectedItem['v_corporate_actions.action_type'] !== '(AGM) General Assembly' &&
+                                selectedItem['v_corporate_actions.action_type'] !== 'IPO' &&
+                                selectedItem['v_corporate_actions.entry_type'] !== 'Announcement' ?
+                                    <OtherTable listItem={selectedItem}></OtherTable> : ''
+                            }
                         </div>
-                    }
+                    </div>
                 </>
             ) : ''}
         </div>

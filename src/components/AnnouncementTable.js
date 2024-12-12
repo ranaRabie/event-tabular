@@ -5,10 +5,10 @@ export const AnnouncementTable = ({ listItem }) => {
 
     useEffect(() => {
         const data = [];
-
+    
         // Parse the HTML string using DOMParser
         const parser = new DOMParser();
-        const doc = parser.parseFromString(listItem['v_corporate_actions.announcement_details'], 'text/html');
+        const doc = parser.parseFromString(listItem['v_corporate_actions.announcement_details_html'], 'text/html');
         
         // Replace all img elements with new url
         let imgTags = doc.getElementsByTagName("img");
@@ -36,7 +36,7 @@ export const AnnouncementTable = ({ listItem }) => {
         const updatedHtml = doc.body.innerHTML;
         data.push({
             "v_corporate_actions.action_type": listItem["v_corporate_actions.action_type"],
-            "v_corporate_actions.announcement_details": updatedHtml
+            "v_corporate_actions.announcement_details_html": updatedHtml
         });
 
 
@@ -49,7 +49,7 @@ export const AnnouncementTable = ({ listItem }) => {
             {parsedData && parsedData.map((dataItem, idx) => (
                 <>
                     <h3>{dataItem['v_corporate_actions.action_type']}</h3>
-                    <div key={idx} dangerouslySetInnerHTML={{ __html: dataItem["v_corporate_actions.announcement_details"] }} />
+                    <div key={idx} dangerouslySetInnerHTML={{ __html: dataItem["v_corporate_actions.announcement_details_html"] }} />
                 </>
             ))}
         </div>
