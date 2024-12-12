@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useRef, useImperativeHandle, forwardRef, useState } from "react";
+import React, { useContext, useEffect, useImperativeHandle, forwardRef, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 // import { ExtensionContext } from '@looker/extension-sdk-react';
-import filterDummy from '../data/filters.json'
+import filterDummy from '../Data/filters.json'
+import Select from 'react-select';
 
 export const Filters = forwardRef(({handleFilterChange}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
@@ -18,13 +19,18 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     const [startDate, endDate] = dateRange;
     const [error, setError] = useState(null);
 
-    const companyRef = useRef();
-    const symbolRef = useRef();
-    const industry_group_enRef = useRef();
-    const actionTypeRef = useRef();
+    const [company, setCompany] = useState(null);
+    const [companyShort, setCompanyShort] = useState(null);
+    const [symbol, setSymbol] = useState(null);
+    const [industry, setIndustry] = useState(null);
+    const [actionType, setActionType] = useState(null);
+    const [isin, setIsin] = useState(null);
 
-    const [isCompanySelected, setIsCompanySelected] = useState(false);
-    const [isSymbolSelected, setIsSymbolSelected] = useState(false);
+    const [isCompanyDisabled, setIsCompanyDisabled] = useState(false);
+    const [isCompanyShortDisabled, setIsCompanyShortDisabled] = useState(false);
+    const [isSymbolDisabled, setIsSymbolDisabled] = useState(false);
+    const [isIsinDisabled, setIsIsinDisabled] = useState(false);
+    const [isIndustryDisabled, setIsIndustryDisabled] = useState(false);
     
     useEffect(() => {
         fetchFilterData();
@@ -37,19 +43,19 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
         // Companies, Symbols, Industries, ActionTypes
         try {
             // RUN INLINE QUERY
-            // select action_date, action_type, long_name_en, industry_group_en, isin, symbol from `stg-dev-lkh-23bl6.stg_dev_bqd_product_ca.v_ca_filters` limit 1000
+            // select action_date, action_type, company_full_name, industry_group_en, isin, symbol from `stg-dev-lkh-23bl6.stg_dev_bqd_product_ca.v_looker_corporate_actions_filters` limit 1000
             // const response = await sdk.ok(
             //     sdk.run_inline_query({
             //         result_format: 'json',
             //         limit: null,
             //         body: {
             //             model: 'client_stg_test_data',
-            //             view: 'v_ca_filters',
+            //             view: 'v_looker_corporate_actions_filters',
             //             fields: [
-            //                 'v_ca_filters.action_type',
-            //                 'v_ca_filters.long_name_en',
-            //                 'v_ca_filters.industry_group_en',
-            //                 'v_ca_filters.symbol'
+            //                 'v_looker_corporate_actions_filters.action_type',
+            //                 'v_looker_corporate_actions_filters.company_full_name',
+            //                 'v_looker_corporate_actions_filters.industry_group_en',
+            //                 'v_looker_corporate_actions_filters.symbol'
             //             ],
 
             //             filters: null,
@@ -60,14 +66,8 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             // );
 
             if (filterDummy) {
-                const filterDataArr = {
-                    long_name_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.long_name_en'] !== null).map(event => event['v_ca_filters.long_name_en']))],
-                    symbol: [...new Set(filterDummy.filter(event => event['v_ca_filters.symbol'] !== null).map(event => event['v_ca_filters.symbol']))],
-                    industry_group_en: [...new Set(filterDummy.filter(event => event['v_ca_filters.industry_group_en'] !== null).map(event => event['v_ca_filters.industry_group_en']))],
-                    actionType: [...new Set(filterDummy.filter(event => event['v_ca_filters.action_type'] !== null).map(event => event['v_ca_filters.action_type']))]
-                }
-
-                setFilterData(filterDataArr);
+                // Remove nulls, duplication and group by each field
+                RemoveDataDuplicatesAndNulls(filterDummy);
             }
 
         } catch (error) {
@@ -76,46 +76,166 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
 
     }
 
+    const RemoveDataDuplicatesAndNulls = (data) => {
+        const filterDataArr = {
+            company_full_name: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.company_full_name'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.company_full_name']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+            symbol: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.symbol'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.symbol']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+            industry_group_en: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.industry_group_en'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.industry_group_en']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+            actionType: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.action_type'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.action_type']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+            company_short_name: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.company_short_name'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.company_short_name']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+            isin: [...[...new Set(data
+                    .filter(event => event['v_looker_corporate_actions_filters.isin'] !== null)
+                    .map(event => event['v_looker_corporate_actions_filters.isin']))]
+                    .map(item => ({"label": item, "value": item}))
+            ],
+        }
+
+        setFilterData(filterDataArr);
+    }
+
     const updateFilters = (e, startDate = dateRange[0], endDate = dateRange[1]) => {
         e.preventDefault();
 
         const selectedFilters = {
-            'long_name_en': companyRef.current.value !== 'all' && companyRef.current.value,
-            'symbol': symbolRef.current.value !== 'all' && symbolRef.current.value,
-            'industry_group_en': industry_group_enRef.current.value !== 'all' && industry_group_enRef.current.value,
-            'actionType': actionTypeRef.current.value !== 'all' && actionTypeRef.current.value,
+            'company_full_name': company !== null && company.value,
+            'symbol': symbol !== null && symbol.value,
+            'industry_group_en': industry !== null && industry.value,
+            'actionType': actionType !== null && actionType.value,
+            'company_short_name': companyShort !== null && companyShort.value,
+            'isin': isin !== null && isin.value,
             'startDate': `${moment(startDate).format("YYYY/MM/DD")}`,
-            'endDate': `${moment(endDate).format("YYYY/MM/DD")}`
+            'endDate': `${moment(endDate).format("YYYY/MM/DD")}`,
         }
 
+        console.log(selectedFilters);
         handleFilterChange(selectedFilters);
     }
 
     const clearFilters = (e) => {
         e.preventDefault();
-        companyRef.current.value = 'all';
-        symbolRef.current.value = 'all';
-        industry_group_enRef.current.value = 'all';
-        actionTypeRef.current.value = 'all';
+      
+        setCompany(null);
+        setCompanyShort(null);
+        setIndustry(null);
+        setActionType(null);
+        setSymbol(null);
+        setIsin(null);
 
         const currentDateRange = [new Date(startDateRange), new Date(endDateRange)]
 
         setDateRange(currentDateRange);
 
-        setIsCompanySelected(false);
-        setIsSymbolSelected(false);
+        setIsCompanyShortDisabled(false);
+        setIsCompanyDisabled(false);
+        setIsIndustryDisabled(false);
+        setIsIsinDisabled(false);
+        setIsSymbolDisabled(false);
 
         updateFilters(e, currentDateRange[0], currentDateRange[1]);
     }
 
-    const handleCompanyChange = (e) => {
-        setIsCompanySelected(e.target.value !== "all");
-        setIsSymbolSelected(false);
-    };
-    
-    const handleSymbolChange = (e) => {
-        setIsSymbolSelected(e.target.value !== "all");
-        setIsCompanySelected(false);
+    const handleSelectChange = (option, field) => {
+        if (field === 'company') {
+            if (option !== null) {
+                setIsCompanyShortDisabled(true);
+                setIsIndustryDisabled(true);
+                setIsIsinDisabled(true);
+                setIsSymbolDisabled(true);
+            } else {
+                setIsCompanyShortDisabled(false);
+                setIsCompanyDisabled(false);
+                setIsIndustryDisabled(false);
+                setIsIsinDisabled(false);
+                setIsSymbolDisabled(false);
+            }
+
+            setCompany(option);
+            setIndustry(null);
+            setSymbol(null);
+            setCompanyShort(null);
+            setIsin(null);
+        } else if (field === 'symbol') {
+            if (option !== null) {
+                setIsCompanyShortDisabled(true);
+                setIsIndustryDisabled(true);
+                setIsIsinDisabled(true);
+                setIsCompanyDisabled(true);
+            } else {
+                setIsCompanyShortDisabled(false);
+                setIsCompanyDisabled(false);
+                setIsIndustryDisabled(false);
+                setIsIsinDisabled(false);
+                setIsSymbolDisabled(false);
+            }
+
+            setSymbol(option);
+            setIndustry(null);
+            setCompany(null);
+            setCompanyShort(null);
+            setIsin(null);
+        } else if (field === 'industry') {
+           setIndustry(option);
+        } else if (field === 'actionType') {
+            setActionType(option);
+        } else if (field === 'companyShortName') {
+            if (option !== null) {
+                setIsCompanyDisabled(true);
+                setIsIndustryDisabled(true);
+                setIsIsinDisabled(true);
+                setIsSymbolDisabled(true);
+            } else {
+                setIsCompanyShortDisabled(false);
+                setIsCompanyDisabled(false);
+                setIsIndustryDisabled(false);
+                setIsIsinDisabled(false);
+                setIsSymbolDisabled(false);
+            }
+
+            setCompanyShort(option);
+            setIndustry(null);
+            setSymbol(null);
+            setCompany(null);
+            setIsin(null);
+        } else if (field === 'isin') {
+            if (option !== null) {
+                setIsCompanyShortDisabled(true);
+                setIsIndustryDisabled(true);
+                setIsCompanyDisabled(true);
+                setIsSymbolDisabled(true);
+            } else {
+                setIsCompanyShortDisabled(false);
+                setIsCompanyDisabled(false);
+                setIsIndustryDisabled(false);
+                setIsIsinDisabled(false);
+                setIsSymbolDisabled(false);
+            }
+
+            setIsin(option);
+            setIndustry(null);
+            setSymbol(null);
+            setCompanyShort(null);
+            setCompany(null);
+        }
     };
 
     useImperativeHandle(ref, () => ({
@@ -132,32 +252,75 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             {error && <div className='error'>{error}</div>}
             <form className="filters">
                 <div>
-                    <label>Company Name</label>
-                    <select ref={companyRef} onChange={handleCompanyChange} disabled={isSymbolSelected}>
-                        <option value="all">all</option>
-                        {filterData && filterData.long_name_en.map((company, idx) => <option value={company} key={idx}>{company}</option>)}
-                    </select>
+                        <label>Company Full Name</label>
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.company_full_name} 
+                            onChange={(e) => handleSelectChange(e, 'company')}
+                            isDisabled={isCompanyDisabled}
+                            isClearable
+                            value={company}
+                        />
                 </div>
                 <div>
-                    <label>Symbol</label>
-                    <select ref={symbolRef} onChange={handleSymbolChange} disabled={isCompanySelected}>
-                        <option value="all">all</option>
-                        {filterData && filterData.symbol.map((symbol, idx) => <option value={symbol} key={idx}>{symbol}</option>)}
-                    </select>
+                    <label>Company Short Name</label>
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.company_short_name} 
+                            onChange={(e) => handleSelectChange(e, 'companyShortName')}
+                            isDisabled={isCompanyShortDisabled}
+                            isClearable
+                            value={companyShort}
+                        />
+                </div>
+                <div>
+                    <label>Symbol</label> 
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.symbol} 
+                            onChange={(e) => handleSelectChange(e, 'symbol')}
+                            isDisabled={isSymbolDisabled}
+                            isClearable
+                            value={symbol}
+                        />
                 </div>
                 <div>
                     <label>Industry</label>
-                    <select ref={industry_group_enRef} disabled={isCompanySelected}>
-                        <option value="all">all</option>
-                        {filterData && filterData.industry_group_en.map((industry, idx) => <option value={industry} key={idx}>{industry}</option>)}
-                    </select>
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.industry_group_en} 
+                            onChange={(e) => handleSelectChange(e, 'industry')}
+                            isDisabled={isIndustryDisabled}
+                            isClearable
+                            value={industry}
+                        />
                 </div>
                 <div>
                     <label>Action Type</label>
-                    <select ref={actionTypeRef}>
-                        <option value="all">all</option>
-                        {filterData && filterData.actionType.map((action, idx) => <option value={action} key={idx}>{action}</option>)}
-                    </select>
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.actionType} 
+                            onChange={(e) => handleSelectChange(e, 'actionType')}
+                            isClearable
+                            value={actionType}
+                        />
+                </div>
+                <div>
+                    <label>ISIN</label> 
+                        <Select 
+                            className="react-select-container"
+                            classNamePrefix="react-select"
+                            options={filterData && filterData.isin} 
+                            onChange={(e) => handleSelectChange(e, 'isin')}
+                            isDisabled={isIsinDisabled}
+                            isClearable   
+                            value={isin}                     
+                        />
                 </div>
                 <div className="date-picker-wrapper">
                     <label>Date Range</label>
