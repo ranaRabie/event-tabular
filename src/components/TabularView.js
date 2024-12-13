@@ -21,6 +21,7 @@ export const TabularView = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [noData, setNoData] = useState(null);
 
     useEffect(() => {
         const filterDates = filtersRef.current.getFilterDates();
@@ -118,7 +119,7 @@ export const TabularView = () => {
 
             
             if(eventsDummy.length === 0) {
-                setError('no data');
+                setNoData('No Data');
             }
             
             // setEventsList(response);
@@ -156,6 +157,7 @@ export const TabularView = () => {
                     ) : ''}
                     <div className='events-wrapper'>
                         {error && <div className='error'>{error}</div>}
+                        {noData && <div className='no-data'>{noData}</div>}
                         
                         {eventsList.length > 0 &&
                             <EventsTable list={eventsList} onClickItem={handleRowClick}></EventsTable>

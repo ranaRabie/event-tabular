@@ -57,8 +57,13 @@ export const EventsTable = ({ list, onClickItem }) => {
                             <th>
                                 Symbol
                             </th>
-                            <th>Isin</th>
-                            <th>Action Date</th>
+                            <th>ISIN</th>
+                            <th>
+                                <button className="sort-btn" type="button" onClick={() => setSortConfig({key: 'v_corporate_actions.action_date', isAsc: !sortConfig.isAsc})}>
+                                    <span>Action Date</span>
+                                    <i className="fa fa-sort"></i>
+                                </button>
+                            </th>
                             <th>Entry Type</th>
                             <th>
                                 <button className="sort-btn" type="button" onClick={() => setSortConfig({key: 'v_corporate_actions.action_type', isAsc: !sortConfig.isAsc})}>

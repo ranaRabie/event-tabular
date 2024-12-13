@@ -365,11 +365,8 @@ table th button.sort-btn i {
   }
 }
 
-.error {
-  color: red;
-  background-color: #ffe7e7;
+.error, .no-data {
   border-radius: 5px;
-  border: 1px solid red;
   padding: 0 1rem;
   display: block;
   margin: 0 auto 0.5rem;
@@ -377,4 +374,14 @@ table th button.sort-btn i {
   font-size: 0.8rem;
   width: 100%;
   box-sizing: border-box;
+}
+.error {
+  color: red;
+  background-color: #ffe7e7;
+  border: 1px solid red;
+}
+.no-data {
+  color: #336ae9;
+  background-color: #c8d8ff;
+  border: 1px solid #336ae9;
 }

@@ -81,6 +81,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             company_full_name: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.company_full_name'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.company_full_name']))]
+                    .sort((a,b) => a.localeCompare(b))
                     .map(item => ({"label": item, "value": item}))
             ],
             symbol: [...[...new Set(data
@@ -91,21 +92,25 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             industry_group_en: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.industry_group_en'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.industry_group_en']))]
+                    .sort((a,b) => a.localeCompare(b))
                     .map(item => ({"label": item, "value": item}))
             ],
             actionType: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.action_type'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.action_type']))]
+                    .sort((a,b) => a.localeCompare(b))
                     .map(item => ({"label": item, "value": item}))
             ],
             company_short_name: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.company_short_name'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.company_short_name']))]
+                    .sort((a,b) => a.localeCompare(b))
                     .map(item => ({"label": item, "value": item}))
             ],
             isin: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.isin'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.isin']))]
+                    .sort((a,b) => a.localeCompare(b))
                     .map(item => ({"label": item, "value": item}))
             ],
         }
