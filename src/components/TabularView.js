@@ -42,6 +42,7 @@ export const TabularView = () => {
         setIsLoading(true);
         setSelectedItem(null);
         setError(null);
+        setNoData(null);
 
         const currentFilters = {};
 
