@@ -87,7 +87,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             symbol: [...[...new Set(data
                     .filter(event => event['v_looker_corporate_actions_filters.symbol'] !== null)
                     .map(event => event['v_looker_corporate_actions_filters.symbol']))]
-                    .sort((a,b) => a.localeCompare(b))
+                    .sort((a, b) => {return a-b})
                     .map(item => ({"label": item, "value": item}))
             ],
             industry_group_en: [...[...new Set(data
