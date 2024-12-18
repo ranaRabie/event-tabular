@@ -122,6 +122,9 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     const updateFilters = (e, startDate = dateRange[0], endDate = dateRange[1]) => {
         e.preventDefault();
 
+        let dayAfterEndDate = new Date(endDate);
+        dayAfterEndDate = dayAfterEndDate.setDate(endDate.getDate() + 1);
+
         const selectedFilters = {
             'company_full_name': company !== null && company.value,
             'symbol': symbol !== null && symbol.value,
@@ -130,7 +133,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             'company_short_name': companyShort !== null && companyShort.value,
             'isin': isin !== null && isin.value,
             'startDate': `${moment(startDate).format("YYYY/MM/DD")}`,
-            'endDate': `${moment(endDate).format("YYYY/MM/DD")}`,
+            'endDate': `${moment(dayAfterEndDate).format("YYYY/MM/DD")}`,
         }
 
         console.log(selectedFilters);
