@@ -12,6 +12,7 @@ export const DividendTable = ({ listItem }) => {
                         <th>Distribution Method</th>
                         <th>Distribution Amount</th>
                         <th>EX Date</th>
+                        <th>Period</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,9 @@ export const DividendTable = ({ listItem }) => {
                         }</td>
                         <td>{
                             listItem['v_corporate_actions.dividends_ex_date'] ? listItem['v_corporate_actions.dividends_ex_date'] : '-'
+                        }</td>
+                        <td>{
+                            listItem['v_corporate_actions.period'] ? listItem['v_corporate_actions.period'] : '-'
                         }</td>
                     </tr>
                 </tbody>
