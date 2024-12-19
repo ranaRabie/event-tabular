@@ -6,7 +6,7 @@ import moment from 'moment';
 import filterDummy from '../Data/filters.json'
 import Select from 'react-select';
 
-export const Filters = forwardRef(({handleFilterChange}, ref) => {
+export const Filters = forwardRef(({handleFilterChange, disableFilters}, ref) => {
     // const extensionContext = useContext(ExtensionContext);
     // const sdk = extensionContext.core40SDK; // Use the appropriate version of the Looker API
 
@@ -32,10 +32,16 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     const [isIsinDisabled, setIsIsinDisabled] = useState(false);
     const [isIndustryDisabled, setIsIndustryDisabled] = useState(false);
     const [isDisabled, setIsDisabled] = useState(true);
+    const [isDataFetching, setIsDataFetching] = useState(false);
     
     useEffect(() => {
         fetchFilterData();
     }, []);
+
+    useEffect(() => {
+        setIsDisabled(disableFilters);
+        setIsDataFetching(disableFilters);
+    }, [disableFilters]);
 
     const fetchFilterData = async () => {
         setError(null);
@@ -340,13 +346,14 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                         selectsRange={true}
                         startDate={startDate}
                         endDate={endDate}
+                        disabled={isDataFetching}
                         onChange={(update) => {
                             setDateRange(update);
                         }}
                     />
                 </div>
-                <button className="submit-filters" onClick={updateFilters}>Apply</button>
-                <button className="clear-filters" onClick={clearFilters}>Clear</button>
+                <button className="submit-filters" disabled={isDataFetching} onClick={updateFilters}>Apply</button>
+                <button className="clear-filters" disabled={isDataFetching} onClick={clearFilters}>Clear</button>
             </form>
         </>
     )

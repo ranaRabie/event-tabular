@@ -277,6 +277,10 @@ table th button.sort-btn i {
   cursor: pointer;
 }
 
+.filters .submit-filters:disabled, .filters .clear-filters:disabled {
+  opacity: 0.4;
+}
+
 .filters .clear-filters {
   margin: 0.3rem 0;
 }

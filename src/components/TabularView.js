@@ -22,6 +22,7 @@ export const TabularView = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [noData, setNoData] = useState(null);
+    const [isDisableFilters, setIsDisableFilters] = useState(false);
 
     useEffect(() => {
         const filterDates = filtersRef.current.getFilterDates();
@@ -40,6 +41,7 @@ export const TabularView = () => {
 
     const fetchData = async (filters) => {
         setIsLoading(true);
+        setIsDisableFilters(true);
         setSelectedItem(null);
         setError(null);
         setNoData(null);
@@ -126,9 +128,11 @@ export const TabularView = () => {
             // setEventsList(response);
             setEventsList(eventsDummy);
             setIsLoading(false);
+            setIsDisableFilters(false);
 
         } catch (error) {
             setIsLoading(false);
+            setIsDisableFilters(false);
             setEventsList(null);
             setError(error);
         }
@@ -148,7 +152,7 @@ export const TabularView = () => {
 
     return (
         <div className='app-wrapper'>
-            <Filters handleFilterChange={handleFilterChange} ref={filtersRef} />
+            <Filters handleFilterChange={handleFilterChange} disableFilters={isDisableFilters} ref={filtersRef} />
             {eventsList ? (
                 <>
                     {isLoading ? (
