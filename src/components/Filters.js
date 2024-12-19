@@ -31,6 +31,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
     const [isSymbolDisabled, setIsSymbolDisabled] = useState(false);
     const [isIsinDisabled, setIsIsinDisabled] = useState(false);
     const [isIndustryDisabled, setIsIndustryDisabled] = useState(false);
+    const [isDisabled, setIsDisabled] = useState(true);
     
     useEffect(() => {
         fetchFilterData();
@@ -68,6 +69,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
             if (filterDummy) {
                 // Remove nulls, duplication and group by each field
                 RemoveDataDuplicatesAndNulls(filterDummy);
+                setIsDisabled(false);
             }
 
         } catch (error) {
@@ -267,7 +269,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.company_full_name} 
                             onChange={(e) => handleSelectChange(e, 'company')}
-                            isDisabled={isCompanyDisabled}
+                            isDisabled={isCompanyDisabled || isDisabled}
                             isClearable
                             value={company}
                         />
@@ -279,7 +281,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.company_short_name} 
                             onChange={(e) => handleSelectChange(e, 'companyShortName')}
-                            isDisabled={isCompanyShortDisabled}
+                            isDisabled={isCompanyShortDisabled || isDisabled}
                             isClearable
                             value={companyShort}
                         />
@@ -291,7 +293,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.symbol} 
                             onChange={(e) => handleSelectChange(e, 'symbol')}
-                            isDisabled={isSymbolDisabled}
+                            isDisabled={isSymbolDisabled || isDisabled}
                             isClearable
                             value={symbol}
                         />
@@ -303,7 +305,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.industry_group_en} 
                             onChange={(e) => handleSelectChange(e, 'industry')}
-                            isDisabled={isIndustryDisabled}
+                            isDisabled={isIndustryDisabled || isDisabled}
                             isClearable
                             value={industry}
                         />
@@ -315,6 +317,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.actionType} 
                             onChange={(e) => handleSelectChange(e, 'actionType')}
+                            isDisabled={isDisabled}
                             isClearable
                             value={actionType}
                         />
@@ -326,7 +329,7 @@ export const Filters = forwardRef(({handleFilterChange}, ref) => {
                             classNamePrefix="react-select"
                             options={filterData && filterData.isin} 
                             onChange={(e) => handleSelectChange(e, 'isin')}
-                            isDisabled={isIsinDisabled}
+                            isDisabled={isIsinDisabled || isDisabled}
                             isClearable   
                             value={isin}                     
                         />
